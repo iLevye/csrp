@@ -75,11 +75,16 @@ Class Clan extends CI_Model{
 		return $row[0];
 	}
 
-	public function get_clan_list($limit1 = 0, $limit2 = 10){
+
+	/*
+		function get_list($limit1 = 0, $limit2 = 10)
+		clan listesini verir. 
+	*/
+	public function get_list($limit1 = 0, $limit2 = 10){
 		$this->db->where("deleted", 0);
 		$this->db->select("Clan.id, Clan.name, Clan.country_id, Country.name as country_name");
 		$this->db->join("Country", "Country.id = Clan.country_id", "left");
-		$this->db->limit($limit2, $limit1);
+		$this->db->limit($limit2, $limit1); // codeigniter da ters yazılıyor limitler.
 		$sql = $this->db->get("Clan");
 		return $sql->result_array();
 	}
