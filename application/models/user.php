@@ -1,13 +1,13 @@
 <?
 
 class User extends CI_Model {	
-	public $user_manager_id;
-	public $user_manager_mail;
-	public $user_manager_password;
-	public $user_manager_name;
-	public $user_manager_username;
-	public $user_manager_city;
-	public $user_manager_country;
+	public $id;
+	public $email;
+	public $password;
+	public $name;
+	public $username;
+	public $city;
+	public $country;
 
 	function __construct() {
 		parent::__construct();
@@ -15,7 +15,7 @@ class User extends CI_Model {
 
 
 	public function create() {
-		$this->db->insert('user_manager',$this);
+		$this->db->insert('User',$this);
 		if($this->db->insert_id()) {
 			$this->id=$this->db->insert_id();
 			return true;
@@ -23,36 +23,36 @@ class User extends CI_Model {
 	}
 
 	public function login() {
-		$this->db->where('user_manager_mail',$this->user_manager_mail);
-		$this->db->where('user_manager_password',$this->user_manager_password);
-		$this->db->select("user_manager_id");
-		$sql=$this->db->get('user_manager');
+		$this->db->where('email', $this->email);
+		$this->db->where('password',$this->password);
+		$this->db->select("id");
+		$sql=$this->db->get('User');
 		//echo $this->db->last_query();
 		$row=$sql->result_array();
-		if(intval(@$row[0]['user_manager_id'])) {
-			$this->user_id=$row[0]['user_manager_id'];
+		if(intval(@$row[0]['id'])) {
+			$this->id = $row[0]['id'];
 			return true;
 		}else{		
 			return false;
 		}
 	}
 	
-	public function get_user($basic = true, $by = "user_manager_id") {
+	public function get_user($basic = true, $by = "id") {
 
 		if ($basic) {
-		    $this->db->select("user_manager_id, user_manager_mail, user_manager_name, user_manager_city,user_manager_country");
+		    $this->db->select("id, email, name, city, country");
 		} else {
-		    $this->db->select("user_manager.*, user_manager_name");
+		    $this->db->select("User.*");
 		    //$this->db->join('Department', 'user_department_id = department_id', "left");
 		}
 
-		if ($by == "user_id") {
-		    $this->db->where('user_manager_id', $this->user_manager_id);
+		if ($by == "id") {
+		    $this->db->where('id', $this->id);
 		} else {
-		    $this->db->where('user_manager_mail', $this->user_manager_mail);
+		    $this->db->where('email', $this->email);
 		}
 
-		$sql = $this->db->get('user_manager');
+		$sql = $this->db->get('User');
 		$row = $sql->result_array();
 
 		//echo $this->db->last_query();
@@ -60,7 +60,7 @@ class User extends CI_Model {
 		    $this->$rk = $rv;
 		}
 
-		unset($this->user_manager_password);
+		unset($this->password);
 	    }
 }
 
