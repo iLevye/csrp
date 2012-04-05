@@ -61,7 +61,7 @@ class User extends CI_Model {
 		}
 
 		unset($this->password);
-	    }
+	}
 }
 
 
